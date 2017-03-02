@@ -16,7 +16,6 @@ import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBuilder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import com.niit.collaboration.dao.ChatDAO;
 import com.niit.collaboration.dao.UserDAO;
 import com.niit.collaboration.daoimpl.UserDAOImpl;
 import com.niit.collaboration.model.Blog;
@@ -27,7 +26,6 @@ import com.niit.collaboration.model.Event;
 import com.niit.collaboration.model.Friend;
 import com.niit.collaboration.model.Job;
 import com.niit.collaboration.model.JobApplication;
-import com.niit.collaboration.model.TBlog;
 import com.niit.collaboration.model.User;
 
 @Configuration
@@ -75,7 +73,7 @@ public class ApplicationContextConfig {
 		sessionBuilder.addAnnotatedClass(Friend.class);
 		sessionBuilder.addAnnotatedClass(Job.class);
 		sessionBuilder.addAnnotatedClass(JobApplication.class);
-		sessionBuilder.addAnnotatedClass(TBlog.class);
+		
 
 		sessionBuilder.addAnnotatedClass(ChatForum.class);
         sessionBuilder.addAnnotatedClass(ChatForumComment.class);

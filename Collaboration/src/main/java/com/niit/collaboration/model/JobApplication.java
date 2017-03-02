@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Entity
 @Table(name = "C_JOB_APPLIED")
 @Component
-public class JobApplication {
+public class JobApplication extends BaseDomain {
 	@Id
 	private int id;
 	
@@ -74,6 +74,7 @@ public class JobApplication {
 	public void setStatus(char status) {
 		this.status = status;
 	}
+
 	
 
 }

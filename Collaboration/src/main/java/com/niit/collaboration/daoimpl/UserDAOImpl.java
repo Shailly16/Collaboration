@@ -15,12 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.niit.collaboration.dao.UserDAO;
 import com.niit.collaboration.model.User;
 
-
-
-
-
-
-
 @Repository("userDAO")
 public class UserDAOImpl implements UserDAO{
 

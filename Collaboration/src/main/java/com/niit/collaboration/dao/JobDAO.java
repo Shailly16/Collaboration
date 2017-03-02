@@ -10,14 +10,14 @@ import com.niit.collaboration.model.User;
 @Repository
 public interface JobDAO {
 	
-	public boolean postJob(Job job);
+	public List<Job> getAllOpendJobs();
+	public Job getJobDetails(Long id);
+	public JobApplication getJobApplication(String userID, String jobID);
+	public JobApplication getJobApplication(String jobID);
 	public boolean updateJob(Job job);
-	public List<Job> getAllvacantJobs();
-	public boolean applyForJob(JobApplication jobApplication);
 	public boolean updateJobApplication(JobApplication jobApplication);
-	public JobApplication get(String userID, String jobID);
-	public List<Job> list();
-	public Job get(String id);
+	public boolean save(JobApplication jobApplied);
+	public boolean save(Job job);
+	public List<Job> getMyAppliedJobs(String userID);
 	
-
 }

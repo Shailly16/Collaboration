@@ -1,15 +1,4 @@
 package com.niit.collaboration.controller;
-
-
-
-
-
-
-
-
-
-
-
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -19,17 +8,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.niit.collaboration.dao.FriendDAO;
 import com.niit.collaboration.dao.UserDAO;
-import com.niit.collaboration.model.Friend;
 import com.niit.collaboration.model.User;
 
 @RestController
@@ -73,11 +59,6 @@ public class UserController {
 			
 		}
 		
-		
-		
-		
-		
-		
 		user.setRole("Admin");
 		userDAO.update(user);
 		user.setErrorCode("200");
@@ -116,8 +97,8 @@ public class UserController {
 			user.setStatus('N');
 			  if (userDAO.save(user) ==true)
 			  {
-				  user.setErrorCode("200");
-					user.setErrorMessage("Thank you  for registration. You have successfully registered as " + user.getRole());
+				user.setErrorCode("200");
+				user.setErrorMessage("Thank you  for registration. You have successfully registered as " + user.getRole());
 			  }
 			  else
 			  {
@@ -259,8 +240,7 @@ public class UserController {
 			session.setAttribute("loggedInUserRole", user.getRole());
 			
 			logger.debug("You are loggin with the role : " +session.getAttribute("loggedInUserRole"));
-
-			friendDAO.setOnline(user.getId());
+            friendDAO.setOnline(user.getId());
 			userDAO.setOnline(user.getId());
 		}
 
