@@ -1,0 +1,25 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:websocket="http://www.springframework.org/schema/websocket"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/websocket
+        http://www.springframework.org/schema/websocket/spring-websocket.xsd">
+
+    <websocket:message-broker application-destination-prefix="/app">
+        <websocket:stomp-endpoint path="/chat">
+            <websocket:sockjs/>
+        </websocket:stomp-endpoint>
+        <websocket:simple-broker prefix="/topic, /queue"/>
+    </websocket:message-broker>
+
+</beans>
+
+<!-- The "/app" prefix is arbitrary. You can pick any prefix. It’s simply meant to differentiate messages to be routed
+ to message-handling methods to do application work vs messages to be routed to the broker to broadcast to subscribed clients.
+The "/topic" and "/queue" prefixes depend on the broker in use. In the case of the simple, in-memory broker the prefixes 
+do not have any special meaning; it’s merely a convention that indicates how the destination is used (pub-sub targetting many 
+subscribers or point-to-point messages typically targeting an individual recipient). In the case of using a dedicated broker, 
+most brokers use "/topic" as a prefix for destinations with pub-sub semantics and "/queue" for destinations with point-to-point
+semantics.Check the STOMP page of the broker to see the destination semantics it supports. -->

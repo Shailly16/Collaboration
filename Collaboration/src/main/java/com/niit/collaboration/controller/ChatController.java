@@ -1,6 +1,8 @@
 package com.niit.collaboration.controller;
 import java.sql.Date;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
@@ -13,6 +15,8 @@ import com.niit.collaboration.model.OutputMessage;
 @Controller
 @RequestMapping("/")
 public class ChatController {
+	private static final Logger logger = 
+			LoggerFactory.getLogger(ChatForumController.class);
 
   @RequestMapping(method = RequestMethod.GET)
   public String viewApplication() {
@@ -20,8 +24,10 @@ public class ChatController {
   }
     
   @MessageMapping("/chat")
-  @SendTo("/topic/message")
+  @SendTo("/queue/message/{friendID}")
   public OutputMessage sendMessage(Message message) {
-    return new OutputMessage(message, new Date(0));
+	  logger.debug("Calling the method sendMessage");
+	  logger.debug("Message:",message.getMessage());
+    return new OutputMessage(message, new Date())
   }
 }

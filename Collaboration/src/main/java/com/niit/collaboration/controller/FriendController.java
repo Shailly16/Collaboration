@@ -1,5 +1,6 @@
 package com.niit.collaboration.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -35,19 +36,35 @@ public class FriendController {
 	
 	@Autowired
 	Friend friend;
-	
-	
+	@Autowired
+	HttpSession http;
 	@RequestMapping(value= "/myFriends",method =RequestMethod.GET)
 	public ResponseEntity<List<Friend>> getMyFriend(HttpSession http){
 		
 		logger.debug("->->->->calling method listAllMyFriends");
 		User loggedInUser =(User) http.getAttribute("loggedInUser");
-		List<Friend> myFriends =friendDAO.getMyFriends(loggedInUser.getId());
-		if (myFriends.isEmpty()) {
+		String loggedInUserID = (String) http.getAttribute("loggedInUserID");
+		List<Friend> myFriends = new ArrayList<Friend>();
+		if(loggedInUserID == null)
+		{
 			friend.setErrorCode("404");
-			friend.setErrorMessage("No friends");
+			friend.setErrorMessage("Please login to know your friends");
+			myFriends.add(friend);
+			return new ResponseEntity<List<Friend>>(myFriends, HttpStatus.OK);
 			
 		}
+       
+		logger.debug("getting friends of : " + loggedInUserID);
+		 myFriends = friendDAO.getMyFriends(loggedInUserID);
+
+		if (myFriends.isEmpty()) {
+			logger.debug("Friends does not exsit for the user : " + loggedInUserID);
+			friend.setErrorCode("404");
+			friend.setErrorMessage("You does not have any friends");
+			myFriends.add(friend);
+		}
+		logger.debug("Send the friend list ");
+		
 		return new ResponseEntity<List<Friend>>(myFriends,HttpStatus.OK);
 		
 	}
@@ -59,7 +76,8 @@ public class FriendController {
 		User loggedInUser =(User) http.getAttribute("loggedInUser");
 		friend.setUserID(loggedInUser.getId());
 		friend.setFriendID(friendID);
-		friend.setStatus("N");
+		friend.setStatus("N"); // N - New, R->Rejected, A->Accepted
+		friend.setIsOnline('N');
 		if (friendDAO.save(friend) ==true)
 		  {
 			friend.setErrorCode("200");
@@ -74,6 +92,24 @@ public class FriendController {
 		  }
 		 return new ResponseEntity<Friend>(friend,HttpStatus.OK);
 		
+	}
+	private boolean isUserExist(String id)
+	{
+		if(userDAO.get(id)==null)
+			return false;
+		else
+			return true;
+	}
+	
+	
+	private boolean isFriendRequestAvailabe(String friendID)
+	{
+		String loggedInUserID = (String) http.getAttribute("loggedInUserID");
+		
+		if(friendDAO.get(loggedInUserID,friendID)==null)
+			return false;
+		else
+			return true;
 	}
 	@RequestMapping(value ="/unfriend/{friendID}",method =RequestMethod.GET)
 	public ResponseEntity<Friend> unfriend(@PathVariable("friendID") String friendID,HttpSession http){
@@ -151,6 +187,47 @@ public class FriendController {
 		return new ResponseEntity<Friend>((Friend) myFriends,HttpStatus.OK);
 	
 }
-	
+	private Friend updateRequest(String friendID, String status) {
+		logger.debug("Starting of the method updateRequest");
+		String loggedInUserID = (String) http.getAttribute("loggedInUserID");
+		logger.debug("loggedInUserID : " + loggedInUserID);
+		
+		if(isFriendRequestAvailabe(friendID)==false)
+		{
+			friend.setErrorCode("404");
+			friend.setErrorMessage("The request does not exist.  So you can not update to "+status);
+		}
+		
+		if (status.equals("A") || status.equals("R"))
+			friend = friendDAO.get(friendID, loggedInUserID);
+		else
+			friend = friendDAO.get(loggedInUserID, friendID);
+		friend.setStatus(status); // N - New, R->Rejected, A->Accepted
+
+		friendDAO.update(friend);
+
+		friend.setErrorCode("200");
+		friend.setErrorMessage(
+				"Request from   " + friend.getUserID() + " To " + friend.getFriendID() + " has updated to :" + status);
+		logger.debug("Ending of the method updateRequest");
+		return friend;
+
+	}
+
+	@RequestMapping("/getRequestsSendByMe")
+	public ResponseEntity<List<Friend>>  getRequestsSendByMe()
+	{
+		logger.debug("->->->->calling method getRequestsSendByMe");
+		
+		String loggedInUserID = (String) http.getAttribute("loggedInUserID");
+		List<Friend> requestSendByMe = friendDAO.getRequestsSendByMe(loggedInUserID);
+		
+		logger.debug("->->->->Ending method getRequestsSendByMe");
+		
+		return new ResponseEntity<List<Friend>>(requestSendByMe, HttpStatus.OK);
+		
+	}
 	
 }
+	
+	

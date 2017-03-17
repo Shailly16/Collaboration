@@ -21,7 +21,9 @@ public interface FriendDAO {
 	public void setOnline(String userID);
 	
 	public void setOffline(String userID);
+	
+	public Friend get(String userID);
 
-
+	public List<Friend> getRequestsSendByMe(String userID);
 	
 }

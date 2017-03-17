@@ -5,6 +5,8 @@ import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,30 +15,60 @@ import com.niit.collaboration.dao.FriendDAO;
 import com.niit.collaboration.model.Friend;
 @Repository("friendDAO")
 public class FriendDAOImpl implements FriendDAO {
-	@Autowired
+	private static final Logger log = LoggerFactory.getLogger(FriendDAOImpl.class);
+	
+	@Autowired(required=true)
 	private SessionFactory sessionFactory;
 
 	public FriendDAOImpl(SessionFactory sessionFactory) {
-		this.sessionFactory = sessionFactory;
+		try {
+			this.sessionFactory = sessionFactory;
+		} catch (Exception e) {
+			log.error(" Unable to connect to db");
+			e.printStackTrace();
+		}
 	}
 	
 	private Integer getMaxId()
 	{
+		log.debug("->->Starting of the method getMaxId");
 		String hql = "select max(id) from Friend ";
 		Query query = sessionFactory.openSession().createQuery(hql);
-		Integer maxID = (Integer) query.uniqueResult();
+		Integer maxID; 
+		try {
+			maxID = (Integer) query.uniqueResult();
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+			return 100;
+		}
+		log.debug("Max id :" + maxID);
 		return maxID;
 	}
 
 
 	@Transactional
 	public List<Friend> getMyFriends(String userID) {
-		String hql ="from Friend where userID =" +"'" +userID +"' and status ='"+ "A'";
-		Query query = sessionFactory.getCurrentSession().createQuery(hql);
-		List<Friend> list =(List<Friend>) query.list();
+String hql1 = "select friendID  from Friend where userID='" + userID + "' and status = 'A' ";
+
+		/*+ " union  " +*/
+
+String hql2= "select userID from Friend where friendID='" + userID + "' and status = 'A'";
+
+log.debug("getMyFriends hql1 : " + hql1);
+log.debug("getMyFriends hql2 : " + hql2);
+
+List<Friend> list1 = sessionFactory.openSession().createQuery(hql1).list();
+List<Friend> list2 = sessionFactory.openSession().createQuery(hql2).list();
+
+
+
+list1.addAll(list2);
+
+return list1;
+
+}
 	
-		return list;
-	}
 	@Transactional
 	public Friend get(String userID, String friendID) {
 		String hql = "from Friend where userID=" +"'" + userID + "' and friendID='"+ friendID +"'";
@@ -54,7 +86,7 @@ public class FriendDAOImpl implements FriendDAO {
 			sessionFactory.getCurrentSession().save(friend);
 			return true;
 		} catch (HibernateException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 			return false;
 		}
@@ -68,9 +100,9 @@ public class FriendDAOImpl implements FriendDAO {
 			sessionFactory.getCurrentSession().update(friend);
 			return true;
 		} catch (HibernateException e) {
-			// TODO: handle exception
+			
 			e.printStackTrace();
-			// TODO Auto-generated method stub
+			
 			return false;
 		}
 	}
@@ -90,7 +122,7 @@ public class FriendDAOImpl implements FriendDAO {
 		List<Friend> list = (List<Friend>) query.list();
 		
 		
-		// TODO Auto-generated method stub
+		
 		return list;
 	}
 
@@ -120,5 +152,25 @@ public class FriendDAOImpl implements FriendDAO {
 		
 	}
 
+
+@Transactional
+public Friend get(String userID)
+{
+	String hql = "from Friend where userID=" + "'" + userID + "' and friendID= '" + userID + "'";
+
+	log.debug("hql: " + hql);
+	Query query = sessionFactory.openSession().createQuery(hql);
+
+	return (Friend) query.uniqueResult();
+
 }
- 
+@Transactional
+public List<Friend> getRequestsSendByMe(String userID) {
+	String hql = "select friendID from Friend where userID=" + "'" + userID + "' and status ='" + "N'";
+
+	log.debug(hql);
+	return  sessionFactory.openSession().createQuery(hql).list();
+
+}
+
+}

@@ -5,12 +5,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
+import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 @Configuration
 @EnableWebMvc
@@ -24,7 +26,7 @@ public class AppConfig extends WebMvcConfigurerAdapter{
 	public ViewResolver viewResolver(){
 		logger.debug("Starting of the method viewResolver");
 		
-		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
+		UrlBasedViewResolver viewResolver = new UrlBasedViewResolver();
 		viewResolver.setViewClass(JstlView.class);
 		viewResolver.setPrefix("/WEB-INF/views/");
 		viewResolver.setSuffix(".html");
@@ -32,6 +34,13 @@ public class AppConfig extends WebMvcConfigurerAdapter{
 		
 		return viewResolver;
 	}
+	
+	@Bean(name= "multipartResolver")
+	public CommonsMultipartResolver multiPartResolver(){
+		CommonsMultipartResolver resolver = new CommonsMultipartResolver();
+		return resolver;
+	}
+	
 	
 	@Override
 	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer){

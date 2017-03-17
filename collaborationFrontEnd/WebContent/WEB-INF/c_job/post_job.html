@@ -1,10 +1,38 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
-</head>
-<body>
+<div>
 
-</body>
-</html>
+	
+
+
+	<div ng-hide="currentUser==''">
+
+   <!--   alias name  -->
+		<div class="generic-container" ng-controller="JobController as ctrl">
+
+			<form ng-submit="ctrl.submit()" name="myForm" class="form-horizontal">
+
+				<label>Please fill the Job details..</label>
+
+
+
+				<div class="row">
+					<div class="form-group col-md-12">
+						<label class="col-md-2 control-lable" for="title">Job Title</label>
+						<div class="col-md-7">
+							<input type="text" ng-model="ctrl.job.title" id="title"
+								class="title form-control input-sm"
+								placeholder="Enter job title" required  />
+						</div>
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="form-group col-md-12">
+						<label class="col-md-2 control-lable" for="qualification">Qualification</label>
+						<div class="col-md-7">
+							<input type="text" ng-model="ctrl.job.qualification" id="qualification"
+								class="title form-control input-sm"
+								placeholder="Enter job qualification" required  />
+						</div>
+					</div>
+				</div>
+

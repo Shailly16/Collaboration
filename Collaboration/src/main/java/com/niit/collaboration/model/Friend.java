@@ -1,6 +1,7 @@
 package com.niit.collaboration.model;
 
 import java.io.Serializable;
+import java.sql.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,7 +23,32 @@ public class Friend extends BaseDomain implements Serializable{
 	
 	
 	private String status;
+	@Column(name="is_online")
+	private char  isOnline;
+	
+	
+	public char getIsOnline() {
+		return isOnline;
+	}
 
+
+	public void setIsOnline(char isOnline) {
+		this.isOnline = isOnline;
+	}
+
+
+	public Date getLastSeenTime() {
+		return lastSeenTime;
+	}
+
+
+	public void setLastSeenTime(Date lastSeenTime) {
+		this.lastSeenTime = lastSeenTime;
+	}
+
+
+	@Column(name = "LAST_SEEN_TIME")
+	private Date lastSeenTime;
 
 	public int getId() {
 		return id;
