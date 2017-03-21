@@ -1,29 +1,30 @@
 package com.niit.collaboration.model;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class OutputMessage extends Message
 {
-	private Date time;
+	private MainDate time;
 	
 	private String userID;
 	
-	public Date getTime() {
+	public MainDate getTime() {
 		return time;
 	}
 
-	public void setTime(Date time) {
+	public void setTime(MainDate time) {
 		this.time = time;
 	}
 
-	public OutputMessage(Message original, Date time, String userID)
+	public OutputMessage(Message original, MainDate date,String string)
 	{
 		super(original.getId(), original.getMessage());
-		this.time = time;
+		this.time = date;
 		this.setUserID(userID);
 		
 	}
 
+	
 	public String getUserID() {
 		return userID;
 	}

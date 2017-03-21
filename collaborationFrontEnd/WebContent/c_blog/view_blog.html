@@ -1,0 +1,25 @@
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script> 
+ 
+
+ </head>
+ <body ng-app="">
+ <div ng-include="'c_common/header.html'"></div>
+ {{8+7}}
+<div class="container" ng-controller="BlogController as ctrl">
+
+	<div class="form-group">
+		<label>{{selectedBlog.title}}</label> <br> 
+		Written by: <label>{{selectedBlog.userID}}</label>
+		<p><span class="glyphicon glyphicon-time"></span><label>{{selectedBlog.dateTime}}</label></p>
+         <br> 
+         <label>{{selectedBlog.description}}</label>     
+		<a class="btn btn-primary" href="#">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
+
+
+	</div>
+
+</div>
+</body>
+</html>

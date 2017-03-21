@@ -1,4 +1,6 @@
 package com.niit.collaboration.controller;
+
+
 import java.sql.Date;
 
 import org.slf4j.Logger;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.niit.collaboration.model.MainDate;
 import com.niit.collaboration.model.Message;
 import com.niit.collaboration.model.OutputMessage;
 
@@ -28,6 +31,6 @@ public class ChatController {
   public OutputMessage sendMessage(Message message) {
 	  logger.debug("Calling the method sendMessage");
 	  logger.debug("Message:",message.getMessage());
-    return new OutputMessage(message, new Date())
+    return new OutputMessage(message, new MainDate(),"shail");
   }
 }

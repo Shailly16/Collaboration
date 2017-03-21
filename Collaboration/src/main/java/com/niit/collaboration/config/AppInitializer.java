@@ -39,7 +39,7 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
     protected void customizeRegistration(ServletRegistration.Dynamic registration) {
 		logger.debug("Starting of the metnod customizeRegistration");
 		//String path = "resources/img/";
-		String path = "D://Collaboration_images";
+		String path = "F://Collaboration_images";
         File uploadDirectory = new File(path);
 
         // register a MultipartConfigElement

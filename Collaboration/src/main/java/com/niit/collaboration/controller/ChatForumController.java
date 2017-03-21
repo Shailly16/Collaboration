@@ -10,6 +10,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 
+import com.niit.collaboration.model.MainDate;
 import com.niit.collaboration.model.Message;
 import com.niit.collaboration.model.OutputMessage;
 
@@ -26,7 +27,7 @@ public class ChatForumController {
 		  logger.debug("Calling the method sendMessage");
 	  
 		//  logger.debug(" Message ID : ",message.getId());
-	    return new OutputMessage(message, new Date(), "Abbas"); 
+	    return new OutputMessage(message,new MainDate(),""); 
 	  }
 	  
 }
