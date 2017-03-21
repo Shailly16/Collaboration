@@ -16,16 +16,11 @@ import com.niit.collaboration.model.Message;
 import com.niit.collaboration.model.OutputMessage;
 
 @Controller
-@RequestMapping("/")
 public class ChatController {
 	private static final Logger logger = 
 			LoggerFactory.getLogger(ChatForumController.class);
 
-  @RequestMapping(method = RequestMethod.GET)
-  public String viewApplication() {
-    return "index";
-  }
-    
+  
   @MessageMapping("/chat")
   @SendTo("/queue/message/{friendID}")
   public OutputMessage sendMessage(Message message) {
