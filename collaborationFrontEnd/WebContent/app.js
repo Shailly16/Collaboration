@@ -3,15 +3,15 @@ app.config(function($routeProvider) {
 	$routeProvider
 
 	.when('/', {
-		templateUrl : 'c_home/home.html'
-		
+		templateUrl : 'c_home/home.html',
+		controller : 'HomeController'
 	})
 
-	.when('/event', {
+	/*.when('/event', {
 		templateUrl : 'c_upload/upload.html',
 		controller : 'FileUploadController'
 	})
-
+*/
 	.when('/about', {
 		templateUrl : 'c_about/about.html',
 		controller : 'AboutController'
